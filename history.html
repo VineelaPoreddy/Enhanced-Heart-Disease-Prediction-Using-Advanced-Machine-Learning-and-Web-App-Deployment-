@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prediction History</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        tr:hover {
+            background-color: #f9f9f9;
+        }
+
+        .btn {
+            display: block;
+            width: 200px;
+            margin: 30px auto;
+            padding: 10px;
+            text-align: center;
+            background-color: green;
+            color: white;
+            font-size: 1.2em;
+            border-radius: 5px;
+            text-decoration: none;
+        }
+
+        .btn:hover {
+            background-color: darkgreen;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Your Past Predictions</h1>
+
+        {% if predictions %}
+        <table>
+            <tr>
+                <th>#</th>
+                <th>Features</th>
+                <th>Result</th>
+            </tr>
+            {% for prediction in predictions %}
+            <tr>
+                <td>{{ loop.index }}</td>
+                <td>
+                    <ul>
+                        {% for feature, value in prediction.features.items() %}
+                            <li><strong>{{ feature }}:</strong> {{ value }}</li>
+                        {% endfor %}
+                    </ul>
+                </td>
+                <td>{{ prediction.result }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        {% else %}
+        <p>You have no past predictions.</p>
+        {% endif %}
+
+        <a href="{{ url_for('predict') }}" class="btn">Make a New Prediction</a>
+    </div>
+</body>
+</html>

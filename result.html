@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prediction Result</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <style>
+        body {
+            background-color: #f0f8ff;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            background-color: white;
+            padding: 20px 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 90%;
+            max-width: 800px;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        h2 {
+            color: #4CAF50;
+            margin-top: 10px;
+        }
+
+        .image-container {
+            margin: 20px 0;
+        }
+
+        .image-container img {
+            width: 150px;
+            height: auto;
+            border-radius: 50%;
+            border: 5px solid #ddd;
+        }
+
+        .message {
+            font-size: 1.2rem;
+            margin-top: 15px;
+        }
+
+        .message.healthy {
+            color: #4CAF50;
+        }
+
+        .message.warning {
+            color: #d9534f;
+        }
+
+        .carousel-container {
+            margin-top: 20px;
+            display: flex;
+            overflow-x: auto;
+            gap: 15px;
+            padding: 10px 0;
+        }
+
+        .classifier-card {
+            flex: 0 0 200px;
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            transition: transform 0.3s;
+        }
+
+        .classifier-card:hover {
+            transform: scale(1.05);
+        }
+
+        .classifier-name {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .classifier-accuracy {
+            font-size: 1rem;
+            color: #555;
+            margin-top: 5px;
+        }
+
+        .back-link {
+            margin-top: 20px;
+            font-size: 1rem;
+            color: #4CAF50;
+        }
+
+        .back-link a {
+            text-decoration: none;
+            color: #4CAF50;
+        }
+
+        .back-link a:hover {
+            text-decoration: underline;
+        }
+
+        /* Scrollbar styles for the carousel */
+        .carousel-container::-webkit-scrollbar {
+            height: 8px;
+        }
+
+        .carousel-container::-webkit-scrollbar-thumb {
+            background-color: #4CAF50;
+            border-radius: 10px;
+        }
+
+        .carousel-container::-webkit-scrollbar-track {
+            background-color: #ddd;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Prediction Results</h1>
+
+        <div class="image-container">
+            {% if unified_output == "Heart Disease Detected" %}
+                <img src="{{ url_for('static', filename='images/heart_broken.jpeg') }}" alt="Heart Disease Detected">
+            {% else %}
+                <img src="{{ url_for('static', filename='images/heart_healthy.jpeg') }}" alt="No Heart Disease">
+            {% endif %}
+        </div>
+
+        <h2> Final Prediction: {{ unified_output }}</h2>
+
+        <div class="message {% if unified_output == 'Heart Disease Detected' %}warning{% else %}healthy{% endif %}">
+            {% if unified_output == "Heart Disease Detected" %}
+                Please consult a doctor for further evaluation and care.
+            {% else %}
+                Keep up the good work and maintain your healthy lifestyle!
+            {% endif %}
+        </div>
+
+        <div class="carousel-container">
+            {% for result in results %}
+            <div class="classifier-card">
+                <div class="classifier-name">{{ result.classifier }}</div>
+                <div class="classifier-accuracy">
+                    Accuracy: <strong>{{ result.accuracy }}</strong>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="back-link">
+            <a href="{{ url_for('predict') }}">← Back to Prediction</a>
+        </div>
+    </div>
+</body>
+</html>

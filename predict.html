@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Heart Disease Prediction</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <style>
+        /* Body styles */
+        body {
+            background-image: url("{{ url_for('static', filename='images/heart_image4.jpeg') }}");
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;  /* Ensure the body takes full height of the viewport */
+            margin: 0;
+        }
+
+        .container {
+            background-color: rgba(255, 255, 255, 0.9);  /* White background with slight transparency */
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 80%;
+            max-width: 600px;  /* Set a max-width to ensure it doesn’t stretch too wide */
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        input[type="number"], select, input[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        input[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+
+        .prediction-result {
+            margin-top: 20px;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #f8f9fa;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Heart Disease Prediction</h1>
+    
+        <!-- Prediction Form -->
+        <form method="POST" action="{{ url_for('predict') }}">
+    
+            <div class="form-group">
+                <label for="Age">Age:</label>
+                <select name="Age" id="Age" required>
+                    <option value="21">18 to 24</option>
+                    <option value="27">25 to 29</option>
+                    <option value="32">30 to 34</option>
+                    <option value="37">35 to 39</option>
+                    <option value="42">40 to 44</option>
+                    <option value="47">45 to 49</option>
+                    <option value="52">50 to 54</option>
+                    <option value="57">55 to 59</option>
+                    <option value="62">60 to 64</option>
+                    <option value="67">65 to 69</option>
+                    <option value="72">70 to 74</option>
+                    <option value="77">75 to 79</option>
+                    <option value="80">80 or older</option>
+                </select>
+            </div>
+    
+            <div class="form-group">
+                <label for="Diet">Do you follow a diet? (0 = No, 1 = Yes):</label>
+                <input type="number" name="Diet" id="Diet" required min="0" max="1">
+                <small class="form-text text-muted">Enter 0 for No and 1 for Yes.</small>
+            </div>
+    
+            <div class="form-group">
+                <label for="Smoking_Status">Do you smoke regularly or have you smoked at least 100 cigarettes in your lifetime? (0 = No, 1 = Yes):</label>
+                <input type="number" name="Smoking_Status" id="Smoking_Status" required min="0" max="1">
+                <small class="form-text text-muted">Enter 0 for No and 1 for Yes. (100 cigarettes = 5 packs).</small>
+            </div>
+    
+            <div class="form-group">
+                <label for="BMI">Body Mass Index (BMI):</label>
+                <input type="number" name="BMI" id="BMI" required step="any" min="0.0" max="150.0">
+                <small class="form-text text-muted">Calculate BMI: BMI = weight (kg) / height (m)^2.</small>
+            </div>
+    
+            <div class="form-group">
+                <label for="Diabetes">Do you have or have you ever had diabetes? (0 = No, 1 = Yes):</label>
+                <input type="number" name="Diabetes" id="Diabetes" required min="0" max="1">
+                <small class="form-text text-muted">Enter 0 for No and 1 for Yes.</small>
+            </div>
+    
+            <div class="form-group">
+                <label for="Stroke">Have you ever had a stroke? (0 = No, 1 = Yes):</label>
+                <input type="number" name="Stroke" id="Stroke" required min="0" max="1">
+                <small class="form-text text-muted">Enter 0 for No and 1 for Yes.</small>
+            </div>
+    
+            <div class="form-group">
+                <label for="HighBP">Do you have high blood pressure? (0 = No, 1 = Yes):</label>
+                <input type="number" name="HighBP" id="HighBP" required min="0" max="1">
+                <small class="form-text text-muted">Enter 0 for No and 1 for Yes.</small>
+            </div>
+    
+            <div class="form-group">
+                <label for="HighChol">Do you have high cholesterol? (0 = No, 1 = Yes):</label>
+                <input type="number" name="HighChol" id="HighChol" required min="0" max="1">
+                <small class="form-text text-muted">Enter 0 for No and 1 for Yes.</small>
+            </div>
+    
+            <div class="form-group">
+                <label for="CholCheck">Have you had a cholesterol check in the last 5 years? (0 = No, 1 = Yes):</label>
+                <input type="number" name="CholCheck" id="CholCheck" required min="0" max="1">
+                <small class="form-text text-muted">Enter 0 for No and 1 for Yes.</small>
+            </div>
+    
+            <div class="form-group">
+                <label for="PhysActivity">Do you engage in physical activity regularly? (0 = No, 1 = Yes):</label>
+                <input type="number" name="PhysActivity" id="PhysActivity" required min="0" max="1">
+                <small class="form-text text-muted">Enter 0 for No and 1 for Yes.</small>
+            </div>
+    
+            <div class="form-group">
+                <label for="HvyAlcoholConsump">Do you consume heavy alcohol? (0 = No, 1 = Yes):</label>
+                <input type="number" name="HvyAlcoholConsump" id="HvyAlcoholConsump" required min="0" max="1">
+                <small class="form-text text-muted">Enter 0 for No and 1 for Yes.</small>
+            </div>
+    
+            <div class="form-group">
+                <label for="AnyHealthcare">Do you have access to healthcare? (0 = No, 1 = Yes):</label>
+                <input type="number" name="AnyHealthcare" id="AnyHealthcare" required min="0" max="1">
+                <small class="form-text text-muted">Enter 0 for No and 1 for Yes.</small>
+            </div>
+    
+            <div class="form-group">
+                <label for="Sex">Gender (0 = Female, 1 = Male):</label>
+                <input type="number" name="Sex" id="Sex" required min="0" max="1">
+                <small class="form-text text-muted">Enter 0 for Female and 1 for Male.</small>
+            </div>
+    
+            <div class="form-group">
+                <label for="Stress_Level">How would you rate your stress level (1-10 scale)?</label>
+                <input type="number" name="Stress_Level" id="Stress_Level" required min="1" max="10">
+                <small class="form-text text-muted">Rate your stress level from 1 (very low) to 10 (very high).</small>
+            </div>
+    
+            <div class="form-group">
+                <input type="submit" value="Predict">
+            </div>
+        </form>
+    
+        <p>After submitting, you will be redirected to a page showing results from all classifiers.</p>
+    </div>
+</body>
+</html>
+    
+

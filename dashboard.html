@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <style>
+        /* Set background image for the entire page */
+        body {
+            background-image: url('{{ url_for('static', filename='images/heart_image5.jpeg') }}');
+            background-size: cover;
+            background-position: center;
+            height: 100vh;  /* Make the background cover the entire viewport */
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: Arial, sans-serif;
+            color: white;
+        }
+
+        .container {
+            text-align: center;
+            padding: 30px;
+            background: rgba(0, 0, 0, 0.7);  /* Semi-transparent background */
+            border-radius: 15px;
+            width: 300px;
+        }
+
+        h1 {
+            font-size: 2em;
+            margin-bottom: 20px;
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            margin: 10px 0;
+            font-size: 1.2em;
+            border: none;
+            border-radius: 5px;
+            background-color: green;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: darkgreen;
+        }
+
+        a {
+            display: block;
+            margin-top: 20px;
+            color: white;
+            font-size: 1.2em;
+            text-decoration: none;
+            background-color: transparent;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome to Your Dashboard, {{ name }}</h1>
+
+        <!-- Button for making a new prediction -->
+        <button onclick="window.location.href='{{ url_for('predict') }}'">Make a New Prediction</button>
+        
+        <!-- Button to navigate to prediction history -->
+        <button onclick="window.location.href='{{ url_for('history') }}'">View Prediction History</button>
+        
+        <!-- Button for logging out -->
+        <button onclick="window.location.href='{{ url_for('logout') }}'">Log Out</button>
+    </div>
+</body>
+</html>

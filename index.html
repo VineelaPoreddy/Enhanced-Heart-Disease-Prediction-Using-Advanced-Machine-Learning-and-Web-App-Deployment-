@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Heart Disease Prediction</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <style>
+        /* Centering the container */
+        .container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin: 50px auto;
+            text-align: center;
+        }
+
+        .container img {
+            width: 100%;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+            border-radius: 10px;
+        }
+
+        /* Styling for the overlay buttons */
+        .overlay-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            text-align: center;
+            font-size: 1.5rem;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.8);
+        }
+
+        .overlay-text a {
+            display: inline-block;
+            margin: 10px;
+            padding: 10px 20px;
+            background-color: rgba(255, 0, 0, 0.7);
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+        .overlay-text a:hover {
+            background-color: rgba(255, 0, 0, 0.9);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Main Image -->
+        <img src="{{ url_for('static', filename='images/heart_image1.jpeg') }}" alt="Heart Image">
+
+        <!-- Login and Register Buttons -->
+        <div class="overlay-text">
+            <p>Welcome to Heart Disease Prediction</p>
+            <a href="{{ url_for('login') }}">Login</a>
+            <a href="{{ url_for('register') }}">Register</a>
+        </div>
+    </div>
+</body>
+</html>
